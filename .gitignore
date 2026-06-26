@@ -1,0 +1,36 @@
+# dependencies
+node_modules
+.pnpm
+.yarn
+.yarn/patches
+.yarn/pnp.mjs
+.yarn/releases
+.yarn/versions
+
+# production
+.next
+.out
+.vercel
+.vercel_build_output
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+.debug
+
+# env files
+.env
+.env.development
+.env.local
+.env.production
+.env.test
+.env.*.local
+
+# prisma
+.prisma/
+
+# cache
+.npm
+.eslintcache
