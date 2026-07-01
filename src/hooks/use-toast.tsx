@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 
 export interface ToastProps {
@@ -8,8 +10,11 @@ export interface ToastProps {
   duration?: number
 }
 
-let toasts: Array<ToastProps & { id: string }> = []
-let listeners: Array<(toasts: typeof toasts) => void> = []
+type Toast = ToastProps & { id: string }
+
+let toasts: Array<Toast> = []
+type ToastListener = (toasts: Array<Toast>) => void
+let listeners: Array<ToastListener> = []
 
 export function toast(props: ToastProps) {
   const id = crypto.randomUUID()
@@ -30,7 +35,7 @@ export function Toaster() {
   const [currentToasts, setCurrentToasts] = useState(toasts)
   
   useEffect(() => {
-    const listener = (newToasts: typeof toasts) => {
+    const listener = (newToasts: Toast[]) => {
       setCurrentToasts([...newToasts])
     }
     listeners.push(listener)

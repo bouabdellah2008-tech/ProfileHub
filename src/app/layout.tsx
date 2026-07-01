@@ -1,6 +1,6 @@
+import './globals.css'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Toaster } from '@/hooks/use-toast'
 
 export const metadata = {
   title: 'ProfileHub - Create Your Profile',
@@ -36,7 +36,6 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
-        <Toaster />
       </body>
     </html>
   )

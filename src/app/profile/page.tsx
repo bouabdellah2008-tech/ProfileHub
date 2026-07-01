@@ -13,10 +13,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { profileFormSchema, ProfileFormValues } from '@/lib/validations'
 import { toast, Toaster } from '@/hooks/use-toast'
 
-export const metadata = {
-  title: 'Create Profile',
-}
-
 export default function ProfilePage() {
   const [preview, setPreview] = useState<string>('')
   const [isUploading, setIsUploading] = useState(false)
@@ -35,7 +31,7 @@ export default function ProfilePage() {
       lastName: '',
       email: '',
       phone: '',
-      dateOfBirth: '',
+      dateOfBirth: undefined,
       bio: '',
       address: '',
       city: '',
@@ -133,11 +129,11 @@ export default function ProfilePage() {
           title: 'Profile created',
           description: 'Your profile has been created successfully',
         })
-        // Reset form
-        setPreview('')
-        Object.keys(data).forEach((key) => {
-          setValue(key as keyof ProfileFormValues, key === 'dateOfBirth' ? '' : '')
-        })
+// Reset form
+         setPreview('')
+         Object.keys(data).forEach((key) => {
+           setValue(key as keyof ProfileFormValues, key === 'dateOfBirth' ? undefined : '')
+         })
       } else {
         throw new Error('Failed to create profile')
       }

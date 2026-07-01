@@ -1,17 +1,63 @@
-import { db } from '@/lib/db'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+'use client'
+
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { MapPin, Briefcase, Globe } from 'lucide-react'
 
-async function getProfiles() {
-  const profiles = await db.userProfile.findMany({
-    orderBy: { createdAt: 'desc' },
-  })
-  return profiles
+interface Profile {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  bio: string | null
+  profilePicture: string | null
+  occupation: string | null
+  company: string | null
+  city: string | null
+  country: string | null
+  state: string | null
+  website: string | null
+  createdAt: string
 }
 
-export default async function ProfilesPage() {
-  const profiles = await getProfiles()
+export default function ProfilesPage() {
+  const [profiles, setProfiles] = useState<Profile[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/profile')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setProfiles(data.data)
+        } else {
+          setError(data.message || 'Failed to load profiles')
+        }
+      })
+      .catch((err) => setError('Failed to load profiles'))
+      .finally(() => setLoading(false))
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="container py-10">
+        <p className="text-center text-muted-foreground">Loading profiles...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="container py-10">
+        <p className="text-center text-destructive">{error}</p>
+        <p className="text-center text-sm text-muted-foreground mt-2">
+          Make sure DATABASE_URL is configured in your .env file and the database is running.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="container py-10">
